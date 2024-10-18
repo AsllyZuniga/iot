@@ -1,32 +1,35 @@
-'''
-Script description:
-Get temperature and humidity from DHT11 since Arduino.
-Date: 07/10/2024
-Developer: Aslly Zuñiga
-'''
-#Import libraries
-import serial
-import time
+/*
+DATE 19/09/2024
+DEVELOPER : Aslly Zuñiga
+SKETCH DESCRIPTION: GET TEMPERATURE AND HUMIDITY FROM DHT 11
+*/
+#include "DHT.h"
+#define DHTTYPE DHT11
+#define DHTPIN  8
 
-#Arduino port
-arduino_port = "COM3"
-arduino_bau = 9600
 
-service = serial.Serial(
-    arduino_port,
-    arduino_bau,
-    timeout = 1
-)
+float temp = 0;
+float hum = 0;
 
-time.sleep(1) #Delay
+DHT dht(DHTPIN, DHTTYPE);
 
-while True:
-    #data = service.readline.decode('utf-8').strip()
-    data = service.readline.decode('utf-8').rstrip()
-    
-    if data:
-        temperature, humidity = data.split(",")
-        
-        print(f"Temperature: {temperature} °C")
-        print(f"Humidity: {humidity} %")
-    time.sleep(1)
+
+void setup() {
+  dht.begin();
+  Serial.begin(9600);
+
+}
+
+void loop() {
+  delay (2000);
+
+temp = dht.readTemperature();
+hum = dht.readHumidity();
+
+Serial.print("temperatura:" );
+Serial.println(temp);
+Serial.print("humedad:" );
+Serial.println(hum);
+  
+
+}
